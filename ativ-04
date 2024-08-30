@@ -1,0 +1,113 @@
+/*4-Faça programa que gere valores aleatórios para uma matriz 3 x 6 com valores inteiros. O programa deve
+apresentar um menu, oferecendo as seguintes opções para o usuário:
+ 1. Apresentar a matriz
+ 2. Mostrar a soma de todos os elementos das colunas ímpares.
+ 3. Mostrar a média aritmética dos elementos da segunda e quarta colunas.
+ 4. Substituir os valores da sexta coluna pela soma dos valores das colunas 1 e 2.
+ 0. Encerrar programa
+O programa deve conter uma estrutura de caso para cada opção e uma sub-rotina (função ou procedimento)
+para executar cada uma das tarefas.*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define LINHAS 3
+#define COLUNAS 6
+
+void gerarMatriz(int matriz[LINHAS][COLUNAS]);
+void apresentarMatriz(int matriz[LINHAS][COLUNAS]);
+void somaColunasImpares(int matriz[LINHAS][COLUNAS]);
+void mediaSegundaQuartaColunas(int matriz[LINHAS][COLUNAS]);
+void substituirSextaColuna(int matriz[LINHAS][COLUNAS]);
+
+int main() {
+    int matriz[LINHAS][COLUNAS];
+    int opcao;
+    
+    srand(time(NULL));
+    
+    gerarMatriz(matriz);
+    
+    do {
+        printf("\nMenu:\n");
+        printf("1. Apresentar a matriz\n");
+        printf("2. Mostrar a soma de todos os elementos das colunas ímpares\n");
+        printf("3. Mostrar a média aritmética dos elementos da segunda e quarta colunas\n");
+        printf("4. Substituir os valores da sexta coluna pela soma dos valores das colunas 1 e 2\n");
+        printf("0. Encerrar programa\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        
+        switch(opcao) {
+            case 1:
+                apresentarMatriz(matriz);
+                break;
+            case 2:
+                somaColunasImpares(matriz);
+                break;
+            case 3:
+                mediaSegundaQuartaColunas(matriz);
+                break;
+            case 4:
+                substituirSextaColuna(matriz);
+                apresentarMatriz(matriz);
+                break;
+            case 0:
+                printf("Encerrando o programa.\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+                break;
+        }
+        
+    } while(opcao != 0);
+
+    return 0;
+}
+
+void gerarMatriz(int matriz[LINHAS][COLUNAS]) {
+    for (int i = 0; i < LINHAS; i++) {
+        for (int j = 0; j < COLUNAS; j++) {
+            matriz[i][j] = rand() % 100;
+        }
+    }
+}
+
+void apresentarMatriz(int matriz[LINHAS][COLUNAS]) {
+    printf("\nMatriz:\n");
+    for (int i = 0; i < LINHAS; i++) {
+        for (int j = 0; j < COLUNAS; j++) {
+            printf("%4d", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void somaColunasImpares(int matriz[LINHAS][COLUNAS]) {
+    int soma = 0;
+    for (int i = 0; i < LINHAS; i++) {
+        soma += matriz[i][1];
+        soma += matriz[i][3];
+        soma += matriz[i][5];
+    }
+    printf("Soma dos elementos das colunas ímpares: %d\n", soma);
+}
+
+void mediaSegundaQuartaColunas(int matriz[LINHAS][COLUNAS]) {
+    int soma2 = 0, soma4 = 0;
+    for (int i = 0; i < LINHAS; i++) {
+        soma2 += matriz[i][1];
+        soma4 += matriz[i][3];
+    }
+    float media2 = (float)soma2 / LINHAS;
+    float media4 = (float)soma4 / LINHAS;
+    printf("Média da segunda coluna: %.2f\n", media2);
+    printf("Média da quarta coluna: %.2f\n", media4);
+}
+
+void substituirSextaColuna(int matriz[LINHAS][COLUNAS]) {
+    for (int i = 0; i < LINHAS; i++) {
+        matriz[i][5] = matriz[i][0] + matriz[i][1];
+    }
+}
