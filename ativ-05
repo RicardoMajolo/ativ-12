@@ -1,0 +1,183 @@
+/*Escreva um programa em C que contenha uma matriz quadrada de ordem 5. O programa deve apresentar
+um menu, com as seguintes opções:
+ 1. Preencher a matriz com números aleatórios
+ 2. Preencher a matriz manualmente
+ 3. Apresentar a matriz
+ 4. Trocar valores de duas linhas
+ 5. Trocar valores de duas colunas
+ 6. Trocar valores de uma linha pelos valores de uma coluna
+7. Trocar valores de uma coluna pelos valores de uma linha
+ 0. Encerrar programa
+Nas opções de troca, o programa deve solicitar ao usuário dois índices (de linhas/colunas) para fazer a
+substituição dos valores. O programa deve conter uma estrutura de caso para cada opção e uma sub-rotina
+(função ou procedimento) para executar cada uma das tarefas.*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define ORDEM 5
+
+void preencherMatrizAleatorio(int matriz[ORDEM][ORDEM]);
+void preencherMatrizManual(int matriz[ORDEM][ORDEM]);
+void apresentarMatriz(int matriz[ORDEM][ORDEM]);
+void trocarLinhas(int matriz[ORDEM][ORDEM]);
+void trocarColunas(int matriz[ORDEM][ORDEM]);
+void trocarLinhaPorColuna(int matriz[ORDEM][ORDEM]);
+void trocarColunaPorLinha(int matriz[ORDEM][ORDEM]);
+
+int main() {
+    int matriz[ORDEM][ORDEM];
+    int opcao;
+
+    srand(time(NULL));
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Preencher a matriz com números aleatórios\n");
+        printf("2. Preencher a matriz manualmente\n");
+        printf("3. Apresentar a matriz\n");
+        printf("4. Trocar valores de duas linhas\n");
+        printf("5. Trocar valores de duas colunas\n");
+        printf("6. Trocar valores de uma linha pelos valores de uma coluna\n");
+        printf("7. Trocar valores de uma coluna pelos valores de uma linha\n");
+        printf("0. Encerrar programa\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch(opcao) {
+            case 1:
+                preencherMatrizAleatorio(matriz);
+                break;
+            case 2:
+                preencherMatrizManual(matriz);
+                break;
+            case 3:
+                apresentarMatriz(matriz);
+                break;
+            case 4:
+                trocarLinhas(matriz);
+                break;
+            case 5:
+                trocarColunas(matriz);
+                break;
+            case 6:
+                trocarLinhaPorColuna(matriz);
+                break;
+            case 7:
+                trocarColunaPorLinha(matriz);
+                break;
+            case 0:
+                printf("Encerrando o programa.\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+                break;
+        }
+
+    } while(opcao != 0);
+
+    return 0;
+}
+
+void preencherMatrizAleatorio(int matriz[ORDEM][ORDEM]) {
+    for (int i = 0; i < ORDEM; i++) {
+        for (int j = 0; j < ORDEM; j++) {
+            matriz[i][j] = rand() % 100;
+        }
+    }
+}
+
+void preencherMatrizManual(int matriz[ORDEM][ORDEM]) {
+    for (int i = 0; i < ORDEM; i++) {
+        for (int j = 0; j < ORDEM; j++) {
+            printf("Digite o valor para a posição [%d][%d]: ", i, j);
+            scanf("%d", &matriz[i][j]);
+        }
+    }
+}
+
+void apresentarMatriz(int matriz[ORDEM][ORDEM]) {
+    printf("\nMatriz:\n");
+    for (int i = 0; i < ORDEM; i++) {
+        for (int j = 0; j < ORDEM; j++) {
+            printf("%4d", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void trocarLinhas(int matriz[ORDEM][ORDEM]) {
+    int linha1, linha2;
+    printf("Digite o índice da primeira linha (0 a %d): ", ORDEM - 1);
+    scanf("%d", &linha1);
+    printf("Digite o índice da segunda linha (0 a %d): ", ORDEM - 1);
+    scanf("%d", &linha2);
+
+    if (linha1 < 0 || linha1 >= ORDEM || linha2 < 0 || linha2 >= ORDEM) {
+        printf("Índices de linha inválidos.\n");
+        return;
+    }
+
+    for (int j = 0; j < ORDEM; j++) {
+        int temp = matriz[linha1][j];
+        matriz[linha1][j] = matriz[linha2][j];
+        matriz[linha2][j] = temp;
+    }
+}
+
+void trocarColunas(int matriz[ORDEM][ORDEM]) {
+    int coluna1, coluna2;
+    printf("Digite o índice da primeira coluna (0 a %d): ", ORDEM - 1);
+    scanf("%d", &coluna1);
+    printf("Digite o índice da segunda coluna (0 a %d): ", ORDEM - 1);
+    scanf("%d", &coluna2);
+
+    if (coluna1 < 0 || coluna1 >= ORDEM || coluna2 < 0 || coluna2 >= ORDEM) {
+        printf("Índices de coluna inválidos.\n");
+        return;
+    }
+
+    for (int i = 0; i < ORDEM; i++) {
+        int temp = matriz[i][coluna1];
+        matriz[i][coluna1] = matriz[i][coluna2];
+        matriz[i][coluna2] = temp;
+    }
+}
+
+void trocarLinhaPorColuna(int matriz[ORDEM][ORDEM]) {
+    int linha, coluna;
+    printf("Digite o índice da linha (0 a %d): ", ORDEM - 1);
+    scanf("%d", &linha);
+    printf("Digite o índice da coluna (0 a %d): ", ORDEM - 1);
+    scanf("%d", &coluna);
+
+    if (linha < 0 || linha >= ORDEM || coluna < 0 || coluna >= ORDEM) {
+        printf("Índice de linha ou coluna inválido.\n");
+        return;
+    }
+
+    for (int i = 0; i < ORDEM; i++) {
+        int temp = matriz[linha][i];
+        matriz[linha][i] = matriz[i][coluna];
+        matriz[i][coluna] = temp;
+    }
+}
+
+void trocarColunaPorLinha(int matriz[ORDEM][ORDEM]) {
+    int coluna, linha;
+    printf("Digite o índice da coluna (0 a %d): ", ORDEM - 1);
+    scanf("%d", &coluna);
+    printf("Digite o índice da linha (0 a %d): ", ORDEM - 1);
+    scanf("%d", &linha);
+
+    if (coluna < 0 || coluna >= ORDEM || linha < 0 || linha >= ORDEM) {
+        printf("Índice de coluna ou linha inválido.\n");
+        return;
+    }
+
+    for (int i = 0; i < ORDEM; i++) {
+        int temp = matriz[i][coluna];
+        matriz[i][coluna] = matriz[linha][i];
+        matriz[linha][i] = temp;
+    }
+}
